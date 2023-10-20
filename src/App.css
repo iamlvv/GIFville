@@ -1,38 +1,95 @@
-.App {
+body {
+  margin: 0 20%;
+  font-family: "Advent Pro", sans-serif;
+  background-color: #000000;
+  color: #fff;
+}
+#header {
+  height: 68px;
+}
+#banner {
+  height: 391px;
+}
+
+.items {
+  /* display: flex;
+  flex-flow: column wrap;
+  align-content: space-between;
+  height: 1000px; */
+  column-count: 4;
+  column-gap: 10px;
+}
+.item {
+  width: 220px;
+  margin-bottom: 2%;
+}
+/* .item:nth-child(3n + 1) {
+  order: 1;
+}
+// set order = 1 cho các item 1, 4, 7, 10,...
+.item:nth-child(3n + 2) {
+  order: 2;
+}
+// set order = 1 cho các item 2, 5, 8, 11,...
+.item:nth-child(3n) {
+  order: 3;
+}
+// set order = 1 cho các item 3, 6, 9, 12,...
+
+/* bắt buộc chèn vào cột mới */
+/* .items::before,
+.items::after {
+  content: "";
+  flex-basis: 100%;
+  width: 0;
+  order: 2;
+} */
+*/
+
+// Create overlay text when hover an image
+.container {
   text-align: center;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.12), 0 2px 4px 0 rgba(0, 0, 0, 0.24);
+  width: 600px;
+  margin: 0 auto;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.image-container {
+  position: relative;
+  display: inline-block;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.3s ease;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+.overlay:hover {
+  opacity: 1;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.overlay h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.overlay p {
+  font-size: 16px;
 }
