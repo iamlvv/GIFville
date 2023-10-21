@@ -31,7 +31,7 @@ const GifDetailPage = (props: Props) => {
   return (
     <div>
       <Header />
-      <Searchbar />
+      {/* <Searchbar /> */}
       <div className="grid grid-cols-4">
         <div className="flex items-center">
           <Image

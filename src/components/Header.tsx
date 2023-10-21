@@ -10,10 +10,16 @@ const Header = (props: Props) => {
     <div id="header" className="shadow-lg">
       <div
         onClick={() => {
-          navigate("/");
+          navigate(0);
         }}
       >
-        <Image width={89} height={67} src={logo2} alt={"logo"} />
+        <Image
+          width={89}
+          height={67}
+          src={logo2}
+          alt={"logo"}
+          className="cursor-pointer select-none"
+        />
       </div>
     </div>
   );

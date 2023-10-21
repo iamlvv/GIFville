@@ -2,19 +2,27 @@ import React, { useEffect, useState } from "react";
 import trending from "../../../assets/trendingicon.png";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import Image from "../../../components/icons/Image";
-import { getTrendingGifs } from "../../../api/trending";
+import { getTrendingGifs, searchTrendingGifs } from "../../../api/trending";
 import Modal from "../../../components/Modal";
 import ModalContent from "../../../components/ModalContent";
 import Button from "../../../components/Button";
-type Props = {};
+type Props = {
+  keyword: string;
+};
 
 const HeaderContent = (props: Props) => {
   return (
-    <div className="flex justify-between mb-5">
-      <div className="flex items-center gap-5">
-        <Image src={trending} width={40} height={40} alt={"trending"} />
-        <h1 className="font-bold text-2xl">Trending</h1>
-      </div>
+    <div className="flex justify-between my-5">
+      {props.keyword.length === 0 ? (
+        <div className="flex items-center gap-5">
+          <Image src={trending} width={40} height={40} alt={"trending"} />
+          <h1 className="font-bold text-2xl">Trending</h1>
+        </div>
+      ) : (
+        <div className="flex items-center gap-5">
+          <h1 className="font-bold text-2xl">{props.keyword}</h1>
+        </div>
+      )}
     </div>
   );
 };
@@ -25,7 +33,6 @@ const MainContent = (props: Props) => {
   const [activeItem, setActiveItem] = useState(null);
 
   const [isShowing, setIsShowing] = useState(false);
-
   const openModal = (item: any) => {
     setIsShowing(true);
     setActiveItem(item);
@@ -41,19 +48,40 @@ const MainContent = (props: Props) => {
   const hideOverlay = () => {
     setShow(false);
   };
-
+  console.log(limit);
   useEffect(() => {
-    getTrendingGifs({ limit: limit, offset: 0, setState: setTrendingList });
+    if (props.keyword.length === 0) {
+      getTrendingGifs({ limit: limit, offset: 0, setState: setTrendingList });
+    }
   }, []);
 
   const handleLoadMore = () => {
-    setLimit(limit + 12);
-    getTrendingGifs({ limit: limit, offset: 0, setState: setTrendingList });
+    setLimit((prev) => prev + 12);
+    if (props.keyword.length === 0) {
+      getTrendingGifs({ limit: limit, offset: 0, setState: setTrendingList });
+    } else {
+      searchTrendingGifs({
+        query: props.keyword,
+        setState: setTrendingList,
+        limit: limit,
+        offset: 0,
+      });
+    }
   };
 
+  useEffect(() => {
+    if (props.keyword.length !== 0) {
+      searchTrendingGifs({
+        query: props.keyword,
+        setState: setTrendingList,
+        limit: limit,
+        offset: 0,
+      });
+    }
+  }, [props.keyword, limit]);
   return (
     <div>
-      <HeaderContent />
+      <HeaderContent keyword={props.keyword} />
       <div className="items">
         {trendingList.map((item: any) => {
           return (

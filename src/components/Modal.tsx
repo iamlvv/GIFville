@@ -1,9 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Image from "./icons/Image";
+import { ToastContainer } from "react-toastify";
 type Props = {
   isShowing: boolean;
-  hide: () => void;
+  hide: (item?: any) => void;
   children: any;
 };
 
@@ -38,6 +39,7 @@ const Modal = (props: Props) =>
               {props.children()}
             </div>
           </div>
+          <ToastContainer />
         </React.Fragment>,
         document.body
       )

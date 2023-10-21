@@ -3,7 +3,7 @@ import React from "react";
 type Props = {
   children: any;
   className?: string;
-  onClick?: () => void;
+  onClick?: (e?: any) => void;
 };
 
 const Button = (props: Props) => {

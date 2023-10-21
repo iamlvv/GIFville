@@ -48,20 +48,24 @@ const getGifDetail = async (props: getGifDetailProps) => {
   }
 };
 
-const searchTrendingGifs = async (
-  query: string,
-  limit: number,
-  offset: number
-) => {
+type SearchTrendingGifsProps = {
+  query: string;
+  limit: number;
+  offset: number;
+  setState: React.Dispatch<any>;
+};
+
+const searchTrendingGifs = async (props: SearchTrendingGifsProps) => {
   try {
     const response = await axios.get(API_URL_SEARCH_TRENDING_GIFS, {
       params: {
         api_key: API_KEY,
-        q: query,
-        limit,
-        offset,
+        q: props.query,
+        limit: props.limit,
+        offset: props.offset,
       },
     });
+    props.setState(response.data.data);
     console.log(response.data);
     return response.data;
   } catch (error) {
