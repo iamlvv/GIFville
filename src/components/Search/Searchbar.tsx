@@ -5,6 +5,7 @@ import Button from "../Button";
 import { searchTrendingGifs } from "../../api/trending";
 import SearchSuggestions from "./SearchSuggestions";
 import { FiSearch } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 type Props = {
   search: string;
   setSearch: (search: string) => void;
@@ -15,9 +16,12 @@ type Props = {
 };
 
 const Searchbar = (props: Props) => {
+  const navigate = useNavigate();
   const handleSubmit = (e: any) => {
     e.preventDefault();
     props.setKeyword(props.search);
+    props.setSearch("");
+    navigate(`/search-results/${props.search}`);
   };
 
   const handleSearch = (e: any) => {
@@ -48,6 +52,7 @@ const Searchbar = (props: Props) => {
               handleSearch(e);
             }}
             required
+            autoFocus
           />
           <Button
             className="flex items-center justify-center bg-slate-950 p-2 rounded-sm cursor-pointer"

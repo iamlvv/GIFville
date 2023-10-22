@@ -52,9 +52,12 @@ const Banner = (props: Props) => {
           setKeyword={props.setKeyword}
         />
       </div>
-      {props.searchResults.length > 0 && (
-        <SearchSuggestions searchResults={props.searchResults} />
-      )}
+      {props.searchResults.length > 0 && props.search.length !== 0 ? (
+        <SearchSuggestions
+          searchResults={props.searchResults}
+          setSearch={props.setSearch}
+        />
+      ) : null}
     </div>
   );
 };

@@ -13,7 +13,7 @@ type Props = {
 const HeaderContent = (props: Props) => {
   return (
     <div className="flex justify-between my-5">
-      {props.keyword.length === 0 ? (
+      {props.keyword.length === 0 && window.location.pathname === "/" ? (
         <div className="flex items-center gap-5">
           <Image src={trending} width={40} height={40} alt={"trending"} />
           <h1 className="font-bold text-2xl">Trending</h1>
@@ -82,45 +82,47 @@ const MainContent = (props: Props) => {
   return (
     <div>
       <HeaderContent keyword={props.keyword} />
-      <div className="items">
-        {trendingList.map((item: any) => {
-          return (
-            <div className="container item cursor-pointer" key={item.id}>
-              <div
-                className="image-container content"
-                onMouseOver={showOverlay}
-                onMouseOut={hideOverlay}
-                onClick={() => openModal(item)}
-              >
-                <img
-                  src={item.images?.original.url}
-                  alt="test"
-                  className="rounded-sm shadow-lg border "
-                  width={220}
-                  height={164}
-                />
-                {show && (
-                  <div className="overlay">
-                    <div className="flex items-center gap-5">
-                      <Image
-                        src={item.user?.avatar_url}
-                        width={50}
-                        height={50}
-                        alt={"user"}
-                      />
-                      <h1>{item.user?.username}</h1>
+      <div className="flex justify-center">
+        <div className="items">
+          {trendingList.map((item: any) => {
+            return (
+              <div className="main-container item cursor-pointer" key={item.id}>
+                <div
+                  className="image-main-container content"
+                  onMouseOver={showOverlay}
+                  onMouseOut={hideOverlay}
+                  onClick={() => openModal(item)}
+                >
+                  <img
+                    src={item.images?.original.url}
+                    alt="test"
+                    className="rounded-sm shadow-lg border "
+                    width={220}
+                    height={164}
+                  />
+                  {show && (
+                    <div className="overlay">
+                      <div className="flex items-center gap-5">
+                        <Image
+                          src={item.user?.avatar_url}
+                          width={50}
+                          height={50}
+                          alt={"user"}
+                        />
+                        <h1>{item.user?.username}</h1>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
+                <Modal
+                  isShowing={isShowing}
+                  hide={closeModal}
+                  children={() => <ModalContent activeItem={activeItem} />}
+                />
               </div>
-              <Modal
-                isShowing={isShowing}
-                hide={closeModal}
-                children={() => <ModalContent activeItem={activeItem} />}
-              />
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
       <Button
         className="flex font-bold items-center gap-5 bg-white hover:bg-black hover:text-white text-black transition ease-in-out w-32 p-2 rounded-md justify-center cursor-pointer border mx-auto my-5"

@@ -6,6 +6,7 @@ type Props = {
   src: string;
   alt: string;
   className?: string;
+  onClick?: (value?: any) => void;
 };
 
 const Image = (props: Props) => {
@@ -15,6 +16,7 @@ const Image = (props: Props) => {
       alt={props.alt}
       style={{ width: props.width, height: props.height }}
       className={props.className}
+      onClick={props.onClick}
     />
   );
 };

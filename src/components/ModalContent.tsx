@@ -3,7 +3,7 @@ import Image from "./icons/Image";
 import { AiFillHeart } from "react-icons/ai";
 import { PiPaperPlaneTiltFill } from "react-icons/pi";
 import Button from "./Button";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 type Props = {
@@ -13,10 +13,7 @@ type Props = {
 const ModalContent = (props: Props) => {
   const handleAddToFavourite = () => {
     localStorage.setItem("favourite", JSON.stringify(props.activeItem));
-  };
-  const handleShare = async () => {
-    await navigator.clipboard.writeText(props.activeItem?.images?.original.url);
-    toast.success("🦄 Wow so easy!", {
+    toast.success("Added to favourite successfully", {
       position: "bottom-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -26,7 +23,19 @@ const ModalContent = (props: Props) => {
       progress: undefined,
       theme: "dark",
     });
-    console.log("toasted");
+  };
+  const handleShare = async () => {
+    await navigator.clipboard.writeText(props.activeItem?.images?.original.url);
+    toast.success("Copied to clipboard successfully", {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   };
   return (
     <div className="text-black flex p-10 gap-5 text-lg">
@@ -64,7 +73,9 @@ const ModalContent = (props: Props) => {
         >
           <Button
             className="flex items-center gap-5 hover:bg-black hover:text-white transition ease-in-out w-32 p-2 rounded-md justify-center cursor-pointer border"
-            onClick={() => {}}
+            onClick={() => {
+              handleAddToFavourite();
+            }}
           >
             <AiFillHeart />
             <h1>Favourite</h1>

@@ -3,6 +3,7 @@ import Image from "../icons/Image";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
+  setSearch: (value: any) => void;
   searchResults: any[];
 };
 
@@ -28,6 +29,7 @@ const SearchSuggestions = (props: Props) => {
             className="flex items-center gap-x-5 p-2 hover:bg-gray-50 bg-white rounded-md select-none cursor-pointer"
             key={result.id}
             onClick={() => {
+              props.setSearch("");
               navigate(`/gif-detail/${result.id}`);
             }}
           >

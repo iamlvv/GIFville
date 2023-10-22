@@ -2,24 +2,40 @@ import React from "react";
 import logo2 from "../assets/logo2.png";
 import Image from "./icons/Image";
 import { useNavigate } from "react-router-dom";
-type Props = {};
+import { AiFillHeart } from "react-icons/ai";
+type Props = {
+  setKeyword: (keyword: string) => void;
+};
 
 const Header = (props: Props) => {
   const navigate = useNavigate();
   return (
     <div id="header" className="shadow-lg">
-      <div
-        onClick={() => {
-          navigate(0);
-        }}
-      >
+      <div className="flex items-center justify-between cursor-pointer select-none">
         <Image
           width={89}
           height={67}
           src={logo2}
           alt={"logo"}
           className="cursor-pointer select-none"
+          onClick={() => {
+            // If current page is not homepage, navigate to homepage
+            // else reload the page
+            if (window.location.pathname !== "/") {
+              props.setKeyword("");
+              navigate("/");
+            }
+          }}
         />
+        <div
+          className="flex gap-x-5 items-center hover:bg-red-500 transition ease-in-out p-2 rounded-md"
+          onClick={() => {
+            navigate("/favourite");
+          }}
+        >
+          <AiFillHeart />
+          <h1 className="font-bold text-center text-2xl">Your Favourites</h1>
+        </div>
       </div>
     </div>
   );

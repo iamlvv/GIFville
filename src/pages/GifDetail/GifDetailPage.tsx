@@ -2,13 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getGifDetail } from "../../api/trending";
 import Header from "../../components/Header";
-import Searchbar from "../../components/Search/Searchbar";
 import Image from "../../components/icons/Image";
-import heart from "../../assets/heart.png";
-import planet from "../../assets/planet.png";
-import test from "../../assets/test.jpg";
-import expandicon from "../../assets/expand.png";
-type Props = {};
+import { AiFillHeart } from "react-icons/ai";
+import { PiPaperPlaneTiltFill } from "react-icons/pi";
+import Button from "../../components/Button";
+import { ToastContainer, toast } from "react-toastify";
+import Banner from "../Homepage/components/Banner";
+import { AiOutlineExpand } from "react-icons/ai";
+type Props = {
+  search: string;
+  keyword: string;
+  setSearch: (value: string) => void;
+  searchResults: any[];
+  setSearchResults: (value: any[]) => void;
+  setKeyword: (keyword: string) => void;
+};
 
 const GifDetailPage = (props: Props) => {
   const { id } = useParams();
@@ -24,60 +32,119 @@ const GifDetailPage = (props: Props) => {
     setShow(false);
   };
 
+  const handleShare = async () => {
+    await navigator.clipboard.writeText(gifDetail.images?.original.url);
+    toast.success("Copied to clipboard successfully", {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+    console.log("toasted");
+  };
+
   useEffect(() => {
     getGifDetail({ id, setState: setGifDetail });
   }, []);
 
   return (
     <div>
-      <Header />
-      {/* <Searchbar /> */}
-      <div className="grid grid-cols-4">
-        <div className="flex items-center">
-          <Image
-            src={gifDetail.user?.avatar_url}
-            width={50}
-            height={50}
-            alt={"user"}
-          />
-          <h1>{gifDetail.user?.username}</h1>
-        </div>
+      <Header setKeyword={props.setKeyword} />
+      <Banner
+        search={props.search}
+        setSearch={props.setSearch}
+        searchResults={props.searchResults}
+        setSearchResults={props.setSearchResults}
+        keyword={props.keyword}
+        setKeyword={props.setKeyword}
+      />
+      <div className="mb-10">
+        <h1 className="text-2xl my-5">
+          <span className="font-bold">GIF Name:</span> {gifDetail.title}
+        </h1>
         <div className="">
-          <div className="flex items-center gap-5">
-            <h1>{gifDetail.title}</h1>
-            <h1>Rating: {gifDetail.rating}</h1>
-          </div>
-          <div className="container">
-            <div
-              onMouseOver={showOverlay}
-              onMouseOut={hideOverlay}
-              className="image-container"
-            >
-              <img src={gifDetail.images?.original.url} alt="test" />
-              {show && (
-                <div className="overlay">
+          <div
+            className="flex justify-center gap-x-20"
+            style={{
+              position: "relative",
+            }}
+          >
+            <div className="main-container">
+              <div
+                onMouseOver={showOverlay}
+                onMouseOut={hideOverlay}
+                className="image-main-container"
+              >
+                <img
+                  src={gifDetail.images?.original.url}
+                  alt="test"
+                  className="rounded-md shadow-lg"
+                />
+                {show && (
+                  <div className="overlay border">
+                    <AiOutlineExpand
+                      width={100}
+                      height={100}
+                      className="cursor-pointer"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+            <div>
+              <div className="flex flex-col gap-y-10">
+                <div className="flex items-center gap-x-5">
+                  <h1 className="font-bold">User: </h1>
                   <Image
-                    src={expandicon}
-                    width={35}
-                    height={35}
-                    alt={"expandicon"}
-                  />{" "}
+                    src={gifDetail.user?.avatar_url}
+                    width={50}
+                    height={50}
+                    alt={"user"}
+                  />
+                  <h1>{gifDetail.user?.username}</h1>
                 </div>
-              )}
+                <div className="flex flex-col gap-y-5">
+                  <div className="flex flex-col gap-5">
+                    <h1>
+                      <span className="font-bold">Rating:</span>{" "}
+                      {gifDetail.rating}
+                    </h1>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="mt-10 flex gap-5 flex-col"
+                style={{
+                  position: "absolute",
+                  bottom: "0",
+                }}
+              >
+                <Button
+                  className="flex items-center gap-5 hover:bg-white hover:text-black transition ease-in-out w-32 p-2 rounded-md justify-center cursor-pointer border text-white bg-black"
+                  onClick={() => {}}
+                >
+                  <AiFillHeart />
+                  <h1>Favourite</h1>
+                </Button>
+                <Button
+                  className="flex items-center gap-5 hover:bg-white hover:text-black transition ease-in-out w-32 p-2 rounded-md justify-center cursor-pointer border text-white bg-black"
+                  onClick={() => {
+                    handleShare();
+                  }}
+                >
+                  <PiPaperPlaneTiltFill />
+                  <h1>Share</h1>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
-        <div>
-          <div className="flex items-center gap-5">
-            <Image src={heart} width={50} height={50} alt={"heart"} />
-            <h1>Favorite</h1>
-          </div>
-          <div className="flex items-center gap-5">
-            <Image src={planet} width={50} height={50} alt={"planet"} />
-            <h1>Share</h1>
-          </div>
-        </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
