@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getGifDetail } from "../../api/trending";
 import Header from "../../components/Header";
@@ -9,14 +9,8 @@ import Button from "../../components/Button";
 import { ToastContainer, toast } from "react-toastify";
 import Banner from "../Homepage/components/Banner";
 import { AiOutlineExpand } from "react-icons/ai";
-type Props = {
-  search: string;
-  keyword: string;
-  setSearch: (value: string) => void;
-  searchResults: any[];
-  setSearchResults: (value: any[]) => void;
-  setKeyword: (keyword: string) => void;
-};
+import { AppContext } from "../../context/AppContext";
+type Props = {};
 
 const GifDetailPage = (props: Props) => {
   const { id } = useParams();
@@ -24,12 +18,54 @@ const GifDetailPage = (props: Props) => {
 
   const [show, setShow] = useState(false);
 
+  const { setFavouriteList } = useContext(AppContext);
+
   const showOverlay = () => {
     setShow(true);
   };
 
   const hideOverlay = () => {
     setShow(false);
+  };
+
+  const handleAddToFavourite = (gifDetails: any) => {
+    // get favourite list from local storage
+    // Check if the item is already in the list
+    // If yes, do not add
+    // If no, add to the list
+    const favouriteList = JSON.parse(
+      localStorage.getItem("favouriteList") || "[]"
+    );
+    const isExist = favouriteList.some(
+      (item: any) => item.id === gifDetails.id
+    );
+    if (isExist) {
+      toast.error("Already added to favourite", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+        progress: undefined,
+      });
+      return;
+    }
+    favouriteList.push(gifDetails);
+    localStorage.setItem("favouriteList", JSON.stringify(favouriteList));
+    setFavouriteList(favouriteList);
+
+    toast.success("Added to favourite successfully", {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   };
 
   const handleShare = async () => {
@@ -53,15 +89,8 @@ const GifDetailPage = (props: Props) => {
 
   return (
     <div>
-      <Header setKeyword={props.setKeyword} />
-      <Banner
-        search={props.search}
-        setSearch={props.setSearch}
-        searchResults={props.searchResults}
-        setSearchResults={props.setSearchResults}
-        keyword={props.keyword}
-        setKeyword={props.setKeyword}
-      />
+      <Header />
+      <Banner />
       <div className="mb-10">
         <h1 className="text-2xl my-5">
           <span className="font-bold">GIF Name:</span> {gifDetail.title}
@@ -125,7 +154,7 @@ const GifDetailPage = (props: Props) => {
               >
                 <Button
                   className="flex items-center gap-5 hover:bg-white hover:text-black transition ease-in-out w-32 p-2 rounded-md justify-center cursor-pointer border text-white bg-black"
-                  onClick={() => {}}
+                  onClick={() => handleAddToFavourite(gifDetail)}
                 >
                   <AiFillHeart />
                   <h1>Favourite</h1>

@@ -1,18 +1,46 @@
-import React from "react";
+import React, { useContext } from "react";
 import Image from "./icons/Image";
 import { AiFillHeart } from "react-icons/ai";
 import { PiPaperPlaneTiltFill } from "react-icons/pi";
 import Button from "./Button";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AppContext } from "../context/AppContext";
 
 type Props = {
   activeItem: any;
 };
 
 const ModalContent = (props: Props) => {
+  const { setFavouriteList } = useContext(AppContext);
   const handleAddToFavourite = () => {
-    localStorage.setItem("favourite", JSON.stringify(props.activeItem));
+    // get favourite list from local storage
+    // Check if the item is already in the list
+    // If yes, do not add
+    // If no, add to the list
+    const favouriteList = JSON.parse(
+      localStorage.getItem("favouriteList") || "[]"
+    );
+    const isExist = favouriteList.some(
+      (item: any) => item.id === props.activeItem?.id
+    );
+    if (isExist) {
+      toast.error("Already added to favourite", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+        progress: undefined,
+      });
+      return;
+    }
+    favouriteList.push(props.activeItem);
+    localStorage.setItem("favouriteList", JSON.stringify(favouriteList));
+    setFavouriteList(favouriteList);
+
     toast.success("Added to favourite successfully", {
       position: "bottom-right",
       autoClose: 5000,

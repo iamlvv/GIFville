@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo2 from "../assets/logo2.png";
 import Image from "./icons/Image";
 import { useNavigate } from "react-router-dom";
 import { AiFillHeart } from "react-icons/ai";
-type Props = {
-  setKeyword: (keyword: string) => void;
-};
+import { AppContext } from "../context/AppContext";
+type Props = {};
 
 const Header = (props: Props) => {
   const navigate = useNavigate();
+
+  const { setKeyword } = useContext(AppContext);
   return (
     <div id="header" className="shadow-lg">
-      <div className="flex items-center justify-between cursor-pointer select-none">
+      <div className="flex items-center justify-between">
         <Image
           width={89}
           height={67}
@@ -22,13 +23,13 @@ const Header = (props: Props) => {
             // If current page is not homepage, navigate to homepage
             // else reload the page
             if (window.location.pathname !== "/") {
-              props.setKeyword("");
+              setKeyword("");
               navigate("/");
             }
           }}
         />
         <div
-          className="flex gap-x-5 items-center hover:bg-red-500 transition ease-in-out p-2 rounded-md"
+          className="flex gap-x-5 items-center hover:bg-red-500 transition ease-in-out p-2 rounded-md cursor-pointer select-none"
           onClick={() => {
             navigate("/favourite");
           }}

@@ -1,29 +1,20 @@
-import React from "react";
+import React, { useContext, useReducer } from "react";
 import Header from "../../components/Header";
 import Banner from "./components/Banner";
 import MainContent from "./components/MainContent";
+import { AppContext } from "../../context/AppContext";
 
-type Props = {
-  keyword: string;
-  setKeyword: (keyword: string) => void;
-};
+type Props = {};
 
 const Homepage = (props: Props) => {
-  const [search, setSearch] = React.useState<string>("");
-  const [searchResults, setSearchResults] = React.useState<any[]>([]);
+  // const [search, setSearch] = React.useState<string>("");
+  // const [searchResults, setSearchResults] = React.useState<any[]>([]);
 
   return (
     <div>
-      <Header setKeyword={props.setKeyword} />
-      <Banner
-        search={search}
-        setSearch={setSearch}
-        searchResults={searchResults}
-        setSearchResults={setSearchResults}
-        keyword={props.keyword}
-        setKeyword={props.setKeyword}
-      />
-      <MainContent keyword={props.keyword} />
+      <Header />
+      <Banner />
+      <MainContent />
     </div>
   );
 };

@@ -1,15 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import Searchbar from "../../../components/Search/Searchbar";
 import SearchSuggestions from "../../../components/Search/SearchSuggestions";
+import { AppContext } from "../../../context/AppContext";
 
-type Props = {
-  search: string;
-  setSearch: (search: string) => void;
-  searchResults: any[];
-  setSearchResults: (searchResults: any[]) => void;
-  keyword: string;
-  setKeyword: (keyword: string) => void;
-};
+type Props = {};
 
 const styles = {
   banner: {
@@ -20,6 +14,15 @@ const styles = {
 
 const Banner = (props: Props) => {
   // Detect clicks outside of search suggestions but not click in the input field
+
+  const {
+    search,
+    setSearch,
+    searchResults,
+    setSearchResults,
+    keyword,
+    setKeyword,
+  } = useContext(AppContext);
   React.useEffect(() => {
     const handleClickOutside = (e: any) => {
       const searchSuggestions = document.getElementById("search-suggestions");
@@ -30,7 +33,7 @@ const Banner = (props: Props) => {
         searchbar &&
         !searchbar.contains(e.target)
       ) {
-        props.setSearchResults([]);
+        setSearchResults([]);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -43,20 +46,10 @@ const Banner = (props: Props) => {
     <div id="banner" className="text-center" style={styles.banner}>
       <div id="banner-header">
         <h1 className="font-bold text-3xl mb-5">Looking for gifs?</h1>
-        <Searchbar
-          search={props.search}
-          setSearch={props.setSearch}
-          searchResults={props.searchResults}
-          setSearchResults={props.setSearchResults}
-          keyword={props.keyword}
-          setKeyword={props.setKeyword}
-        />
+        <Searchbar />
       </div>
-      {props.searchResults.length > 0 && props.search.length !== 0 ? (
-        <SearchSuggestions
-          searchResults={props.searchResults}
-          setSearch={props.setSearch}
-        />
+      {searchResults.length > 0 && search.length !== 0 ? (
+        <SearchSuggestions />
       ) : null}
     </div>
   );

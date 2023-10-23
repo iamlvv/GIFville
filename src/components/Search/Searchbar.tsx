@@ -1,33 +1,33 @@
-import React from "react";
-import Image from "../icons/Image";
-import searchbutton from "../../assets/searchbutton.png";
+import React, { useContext } from "react";
 import Button from "../Button";
 import { searchTrendingGifs } from "../../api/trending";
-import SearchSuggestions from "./SearchSuggestions";
 import { FiSearch } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-type Props = {
-  search: string;
-  setSearch: (search: string) => void;
-  searchResults: any[];
-  setSearchResults: (searchResults: any[]) => void;
-  keyword: string;
-  setKeyword: (keyword: string) => void;
-};
+import { AppContext } from "../../context/AppContext";
+type Props = {};
 
 const Searchbar = (props: Props) => {
   const navigate = useNavigate();
+
+  const {
+    search,
+    setSearch,
+    searchResults,
+    setSearchResults,
+    keyword,
+    setKeyword,
+  } = useContext(AppContext);
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    props.setKeyword(props.search);
-    props.setSearch("");
-    navigate(`/search-results/${props.search}`);
+    setKeyword(search);
+    setSearch("");
+    navigate(`/search-results/${search}`);
   };
 
   const handleSearch = (e: any) => {
     searchTrendingGifs({
-      query: props.search,
-      setState: props.setSearchResults,
+      query: search,
+      setState: setSearchResults,
       limit: 5,
       offset: 5,
     });
@@ -46,9 +46,9 @@ const Searchbar = (props: Props) => {
             type="text"
             placeholder="Search for gifs"
             className="text-black p-2 focus:outline-none rounded-md"
-            value={props.search}
+            value={search}
             onChange={(e) => {
-              props.setSearch(e.target.value);
+              setSearch(e.target.value);
               handleSearch(e);
             }}
             required

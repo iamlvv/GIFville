@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import trending from "../../../assets/trendingicon.png";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import Image from "../../../components/icons/Image";
@@ -6,27 +6,29 @@ import { getTrendingGifs, searchTrendingGifs } from "../../../api/trending";
 import Modal from "../../../components/Modal";
 import ModalContent from "../../../components/ModalContent";
 import Button from "../../../components/Button";
-type Props = {
-  keyword: string;
-};
+import { AppContext } from "../../../context/AppContext";
+type Props = {};
 
 const HeaderContent = (props: Props) => {
+  const { keyword } = useContext(AppContext);
   return (
     <div className="flex justify-between my-5">
-      {props.keyword.length === 0 && window.location.pathname === "/" ? (
+      {keyword.length === 0 && window.location.pathname === "/" ? (
         <div className="flex items-center gap-5">
           <Image src={trending} width={40} height={40} alt={"trending"} />
           <h1 className="font-bold text-2xl">Trending</h1>
         </div>
       ) : (
         <div className="flex items-center gap-5">
-          <h1 className="font-bold text-2xl">{props.keyword}</h1>
+          <h1 className="font-bold text-2xl">{keyword}</h1>
         </div>
       )}
     </div>
   );
 };
 const MainContent = (props: Props) => {
+  const { keyword } = useContext(AppContext);
+
   const [trendingList, setTrendingList] = useState([]);
   const [limit, setLimit] = useState(12);
   const [show, setShow] = useState(false);
@@ -48,20 +50,20 @@ const MainContent = (props: Props) => {
   const hideOverlay = () => {
     setShow(false);
   };
-  console.log(limit);
+
   useEffect(() => {
-    if (props.keyword.length === 0) {
+    if (keyword.length === 0) {
       getTrendingGifs({ limit: limit, offset: 0, setState: setTrendingList });
     }
   }, []);
 
   const handleLoadMore = () => {
     setLimit((prev) => prev + 12);
-    if (props.keyword.length === 0) {
+    if (keyword.length === 0) {
       getTrendingGifs({ limit: limit, offset: 0, setState: setTrendingList });
     } else {
       searchTrendingGifs({
-        query: props.keyword,
+        query: keyword,
         setState: setTrendingList,
         limit: limit,
         offset: 0,
@@ -70,23 +72,23 @@ const MainContent = (props: Props) => {
   };
 
   useEffect(() => {
-    if (props.keyword.length !== 0) {
+    if (keyword.length !== 0) {
       searchTrendingGifs({
-        query: props.keyword,
+        query: keyword,
         setState: setTrendingList,
         limit: limit,
         offset: 0,
       });
     }
-  }, [props.keyword, limit]);
+  }, [keyword, limit]);
   return (
     <div>
-      <HeaderContent keyword={props.keyword} />
+      <HeaderContent />
       <div className="flex justify-center">
         <div className="items">
-          {trendingList.map((item: any) => {
+          {trendingList.map((item: any, index: any) => {
             return (
-              <div className="main-container item cursor-pointer" key={item.id}>
+              <div className="main-container item cursor-pointer" key={index}>
                 <div
                   className="image-main-container content"
                   onMouseOver={showOverlay}

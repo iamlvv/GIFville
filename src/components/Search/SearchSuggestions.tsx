@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Image from "../icons/Image";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../context/AppContext";
 
-type Props = {
-  setSearch: (value: any) => void;
-  searchResults: any[];
-};
+type Props = {};
 
 const styles = {
   searchSuggestions: {
@@ -17,20 +15,22 @@ const styles = {
 const SearchSuggestions = (props: Props) => {
   const navigate = useNavigate();
 
+  const { setSearch, searchResults } = useContext(AppContext);
+
   return (
     <div
       className="rounded-md text-black font-bold mt-5 shadow-lg"
       style={styles.searchSuggestions}
       id="search-suggestions"
     >
-      {props.searchResults.map((result) => {
+      {searchResults.map((result) => {
         return (
           <div
             className="flex items-center gap-x-5 p-2 hover:bg-gray-50 bg-white rounded-md select-none cursor-pointer"
             key={result.id}
             onClick={() => {
-              props.setSearch("");
-              navigate(`/gif-detail/${result.id}`);
+              setSearch("");
+              window.location.href = `/gif-detail/${result.id}`;
             }}
           >
             <Image
