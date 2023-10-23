@@ -80,7 +80,6 @@ const GifDetailPage = (props: Props) => {
       progress: undefined,
       theme: "dark",
     });
-    console.log("toasted");
   };
 
   useEffect(() => {

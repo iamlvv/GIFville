@@ -50,12 +50,11 @@ const MainContent = (props: Props) => {
   const hideOverlay = () => {
     setShow(false);
   };
-
   useEffect(() => {
     if (keyword.length === 0) {
       getTrendingGifs({ limit: limit, offset: 0, setState: setTrendingList });
     }
-  }, []);
+  }, [limit]);
 
   const handleLoadMore = () => {
     setLimit((prev) => prev + 12);

@@ -22,7 +22,6 @@ const getTrendingGifs = async (props: getTrendingGifsProps) => {
       },
     });
     props.setState(response.data.data);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -66,7 +65,6 @@ const searchTrendingGifs = async (props: SearchTrendingGifsProps) => {
       },
     });
     props.setState(response.data.data);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
