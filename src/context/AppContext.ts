@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
+// Context type for the AppContext
 type AppContextType = {
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
@@ -11,6 +12,7 @@ type AppContextType = {
   setFavouriteList: React.Dispatch<React.SetStateAction<any[]>>;
 };
 
+// Default values for the context
 const AppContextDefaultValues: AppContextType = {
   search: "",
   setSearch: () => {},
@@ -22,6 +24,7 @@ const AppContextDefaultValues: AppContextType = {
   setFavouriteList: () => {},
 };
 
+// Create the context with the default values
 export const AppContext = React.createContext<AppContextType>(
   AppContextDefaultValues
 );

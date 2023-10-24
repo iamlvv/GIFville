@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import Image from "./icons/Image";
 import { AiFillHeart } from "react-icons/ai";
 import { PiPaperPlaneTiltFill } from "react-icons/pi";
@@ -11,8 +11,9 @@ type Props = {
   activeItem: any;
 };
 
+// Component to show modal content when user click on gif item
 const ModalContent = (props: Props) => {
-  const { setFavouriteList } = useContext(AppContext);
+  const { setFavouriteList } = useContext(AppContext); // state to store favourite list
   const handleAddToFavourite = () => {
     // get favourite list from local storage
     // Check if the item is already in the list
@@ -52,6 +53,8 @@ const ModalContent = (props: Props) => {
       theme: "dark",
     });
   };
+
+  // handle share gif by copying gif url to clipboard
   const handleShare = async () => {
     await navigator.clipboard.writeText(props.activeItem?.images?.original.url);
     toast.success("Copied to clipboard successfully", {
@@ -102,7 +105,7 @@ const ModalContent = (props: Props) => {
           <Button
             className="flex items-center gap-5 hover:bg-black hover:text-white transition ease-in-out w-32 p-2 rounded-md justify-center cursor-pointer border"
             onClick={() => {
-              handleAddToFavourite();
+              handleAddToFavourite(); // handle add to favourite when user click on favourite button
             }}
           >
             <AiFillHeart />
@@ -111,7 +114,7 @@ const ModalContent = (props: Props) => {
           <Button
             className="flex items-center gap-5 hover:bg-black hover:text-white transition ease-in-out w-32 p-2 rounded-md justify-center cursor-pointer border"
             onClick={() => {
-              handleShare();
+              handleShare(); // handle share when user click on share button
             }}
           >
             <PiPaperPlaneTiltFill />

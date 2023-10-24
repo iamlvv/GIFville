@@ -12,27 +12,32 @@ import { AiOutlineExpand } from "react-icons/ai";
 import { AppContext } from "../../context/AppContext";
 type Props = {};
 
+// Component to show gif detail page
 const GifDetailPage = (props: Props) => {
-  const { id } = useParams();
-  const [gifDetail, setGifDetail] = React.useState<any>({});
+  const { id } = useParams(); // get id from url
 
-  const [show, setShow] = useState(false);
+  const [gifDetail, setGifDetail] = React.useState<any>({}); // state to store gif detail
 
-  const { setFavouriteList } = useContext(AppContext);
+  const [show, setShow] = useState(false); // state to show overlay
 
+  const { setFavouriteList } = useContext(AppContext); // state to store favourite list
+
+  // show overlay
   const showOverlay = () => {
     setShow(true);
   };
 
+  // hide overlay
   const hideOverlay = () => {
     setShow(false);
   };
 
+  // handle add gif to favourite list
   const handleAddToFavourite = (gifDetails: any) => {
-    // get favourite list from local storage
-    // Check if the item is already in the list
-    // If yes, do not add
-    // If no, add to the list
+    // 1. get favourite list from local storage
+    // 2. Check if the item is already in the list
+    // 3. If yes, do not add
+    // 4. If no, add to the list
     const favouriteList = JSON.parse(
       localStorage.getItem("favouriteList") || "[]"
     );
@@ -40,6 +45,7 @@ const GifDetailPage = (props: Props) => {
       (item: any) => item.id === gifDetails.id
     );
     if (isExist) {
+      // if already exist in favourite list, show toast
       toast.error("Already added to favourite", {
         position: "bottom-right",
         autoClose: 5000,
@@ -56,6 +62,7 @@ const GifDetailPage = (props: Props) => {
     localStorage.setItem("favouriteList", JSON.stringify(favouriteList));
     setFavouriteList(favouriteList);
 
+    // show toast if added to favourite list
     toast.success("Added to favourite successfully", {
       position: "bottom-right",
       autoClose: 5000,
@@ -68,8 +75,10 @@ const GifDetailPage = (props: Props) => {
     });
   };
 
+  // handle share gif by copying gif url to clipboard
   const handleShare = async () => {
-    await navigator.clipboard.writeText(gifDetail.images?.original.url);
+    await navigator.clipboard.writeText(gifDetail.images?.original.url); // copy gif url to clipboard
+    // show toast if copied to clipboard
     toast.success("Copied to clipboard successfully", {
       position: "bottom-right",
       autoClose: 5000,
@@ -82,6 +91,7 @@ const GifDetailPage = (props: Props) => {
     });
   };
 
+  // get gif detail by id from api when component mounted
   useEffect(() => {
     getGifDetail({ id, setState: setGifDetail });
   }, []);

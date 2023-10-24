@@ -1,6 +1,5 @@
-import React, { useContext, useState } from "react";
+import { useContext } from "react";
 import Image from "../icons/Image";
-import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 
 type Props = {};
@@ -12,10 +11,10 @@ const styles = {
     margin: "0 auto",
   },
 };
-const SearchSuggestions = (props: Props) => {
-  const navigate = useNavigate();
 
-  const { setSearch, searchResults } = useContext(AppContext);
+// Component to show search suggestions when user type in search bar
+const SearchSuggestions = (props: Props) => {
+  const { setSearch, searchResults } = useContext(AppContext); // get search results from context to show in search suggestions
 
   return (
     <div
@@ -29,6 +28,7 @@ const SearchSuggestions = (props: Props) => {
             className="flex items-center gap-x-5 p-2 hover:bg-gray-50 bg-white rounded-md select-none cursor-pointer"
             key={result.id}
             onClick={() => {
+              // when user click on search suggestion, set search to empty string and redirect to gif detail page
               setSearch("");
               window.location.href = `/gif-detail/${result.id}`;
             }}

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Header from "../../components/Header";
 import { AppContext } from "../../context/AppContext";
 import Button from "../../components/Button";
@@ -7,9 +7,11 @@ import { PiPaperPlaneTiltFill } from "react-icons/pi";
 import { AiFillDelete } from "react-icons/ai";
 type Props = {};
 
+// Component to show favourite page
 const FavouritePage = (props: Props) => {
-  const { favouriteList, setFavouriteList } = useContext(AppContext);
+  const { favouriteList, setFavouriteList } = useContext(AppContext); // get favourite list from context
 
+  // get favourite list from local storage when component mount
   useEffect(() => {
     const favouriteList = JSON.parse(
       localStorage.getItem("favouriteList") || "[]"
@@ -17,6 +19,7 @@ const FavouritePage = (props: Props) => {
     setFavouriteList(favouriteList);
   }, []);
 
+  // handle share gif by copying gif url to clipboard
   const handleShare = async (item: any) => {
     await navigator.clipboard.writeText(item.images?.original.url);
     toast.success("Copied to clipboard successfully", {
@@ -52,6 +55,7 @@ const FavouritePage = (props: Props) => {
                   <h1>Rating: {item.rating}</h1>
                   <Button
                     onClick={() => {
+                      // remove item from favourite list
                       const newFavouriteList = favouriteList.filter(
                         (favouriteItem: any) => favouriteItem.id !== item.id
                       );
@@ -69,7 +73,7 @@ const FavouritePage = (props: Props) => {
                   <Button
                     className="flex items-center gap-5 hover:bg-white hover:text-black transition ease-in-out w-32 p-2 rounded-md justify-center cursor-pointer border"
                     onClick={() => {
-                      handleShare(item);
+                      handleShare(item); // handle share gif
                     }}
                   >
                     <PiPaperPlaneTiltFill />

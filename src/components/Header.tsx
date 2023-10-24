@@ -6,10 +6,11 @@ import { AiFillHeart } from "react-icons/ai";
 import { AppContext } from "../context/AppContext";
 type Props = {};
 
+// Component for displaying header with logo and favourite list button
 const Header = (props: Props) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // navigate to different page
 
-  const { setKeyword } = useContext(AppContext);
+  const { setKeyword } = useContext(AppContext); // state to store keyword
   return (
     <div id="header" className="shadow-lg">
       <div className="flex items-center justify-between">

@@ -12,17 +12,11 @@ const styles = {
   },
 };
 
+// Component to show banner
 const Banner = (props: Props) => {
-  // Detect clicks outside of search suggestions but not click in the input field
+  const { search, searchResults, setSearchResults } = useContext(AppContext);
 
-  const {
-    search,
-    setSearch,
-    searchResults,
-    setSearchResults,
-    keyword,
-    setKeyword,
-  } = useContext(AppContext);
+  // Detect clicks outside of search suggestions but not click in the input field to close search suggestions
   React.useEffect(() => {
     const handleClickOutside = (e: any) => {
       const searchSuggestions = document.getElementById("search-suggestions");

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import trending from "../../../assets/trendingicon.png";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import Image from "../../../components/icons/Image";
@@ -9,6 +9,7 @@ import Button from "../../../components/Button";
 import { AppContext } from "../../../context/AppContext";
 type Props = {};
 
+// Component to show header content: trending or search keyword
 const HeaderContent = (props: Props) => {
   const { keyword } = useContext(AppContext);
   return (
@@ -26,41 +27,54 @@ const HeaderContent = (props: Props) => {
     </div>
   );
 };
+
+// Component to show main content: trending gifs or search gifs result
 const MainContent = (props: Props) => {
-  const { keyword } = useContext(AppContext);
+  const { keyword } = useContext(AppContext); // get keyword from context to show trending gifs or search gifs result
 
-  const [trendingList, setTrendingList] = useState([]);
-  const [limit, setLimit] = useState(12);
-  const [show, setShow] = useState(false);
-  const [activeItem, setActiveItem] = useState(null);
+  const [trendingList, setTrendingList] = useState([]); // trendingList to store trending gifs or search gifs result
+  const [limit, setLimit] = useState(12); // limit to show 12 gifs per page
+  const [show, setShow] = useState(false); // show to show overlay when user hover on gif
+  const [activeItem, setActiveItem] = useState(null); // activeItem to store active gif when user click on gif to show details in modal
 
-  const [isShowing, setIsShowing] = useState(false);
+  const [isShowing, setIsShowing] = useState(false); // isShowing to show modal when user click on gif
+
+  // open modal when user click on gif
   const openModal = (item: any) => {
     setIsShowing(true);
     setActiveItem(item);
   };
 
+  // close modal when user click outside of modal
   const closeModal = () => {
     setIsShowing(false);
   };
+
+  // show overlay when user hover on gif
   const showOverlay = () => {
     setShow(true);
   };
 
+  // hide overlay when user hover out of gif
   const hideOverlay = () => {
     setShow(false);
   };
+
+  // get trending gifs when component mount and keyword is empty
   useEffect(() => {
     if (keyword.length === 0) {
       getTrendingGifs({ limit: limit, offset: 0, setState: setTrendingList });
     }
   }, [limit]);
 
+  // get trending gifs when user click on load more button
   const handleLoadMore = () => {
     setLimit((prev) => prev + 12);
     if (keyword.length === 0) {
+      // if keyword is empty, get trending gifs
       getTrendingGifs({ limit: limit, offset: 0, setState: setTrendingList });
     } else {
+      // if keyword is not empty, get search gifs result
       searchTrendingGifs({
         query: keyword,
         setState: setTrendingList,
@@ -70,7 +84,9 @@ const MainContent = (props: Props) => {
     }
   };
 
+  // get search gifs result when keyword is not empty
   useEffect(() => {
+    console.log("keyword", keyword);
     if (keyword.length !== 0) {
       searchTrendingGifs({
         query: keyword,

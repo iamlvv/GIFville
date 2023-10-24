@@ -1,5 +1,3 @@
-import React from "react";
-
 type Props = {
   width: number;
   height: number;
@@ -9,6 +7,7 @@ type Props = {
   onClick?: (value?: any) => void;
 };
 
+// Component for displaying images with width and height, and optional className and onClick
 const Image = (props: Props) => {
   return (
     <img

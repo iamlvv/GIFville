@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import Button from "../Button";
 import { searchTrendingGifs } from "../../api/trending";
 import { FiSearch } from "react-icons/fi";
@@ -6,17 +6,14 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 type Props = {};
 
+// Component to show search bar
 const Searchbar = (props: Props) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // navigate to other page
 
-  const {
-    search,
-    setSearch,
-    searchResults,
-    setSearchResults,
-    keyword,
-    setKeyword,
-  } = useContext(AppContext);
+  const { search, setSearch, setSearchResults, setKeyword } =
+    useContext(AppContext); // get search, setSearch, setSearchResults, setKeyword from context
+
+  // handle submit search when user click on search button or press enter
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setKeyword(search);
@@ -24,6 +21,7 @@ const Searchbar = (props: Props) => {
     navigate(`/search-results/${search}`);
   };
 
+  // handle search when user type in search bar to show search suggestions
   const handleSearch = (e: any) => {
     searchTrendingGifs({
       query: search,

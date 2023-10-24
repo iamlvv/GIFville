@@ -28,6 +28,7 @@ const getTrendingGifs = async (props: getTrendingGifsProps) => {
   }
 };
 
+// Get GIF Detail by ID
 type getGifDetailProps = {
   id: string | undefined;
   setState: React.Dispatch<any>;
@@ -47,13 +48,13 @@ const getGifDetail = async (props: getGifDetailProps) => {
   }
 };
 
+// Search Trending GIFs by query, limit and offset
 type SearchTrendingGifsProps = {
   query: string;
   limit: number;
   offset: number;
   setState: React.Dispatch<any>;
 };
-
 const searchTrendingGifs = async (props: SearchTrendingGifsProps) => {
   try {
     const response = await axios.get(API_URL_SEARCH_TRENDING_GIFS, {
