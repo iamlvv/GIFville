@@ -42,7 +42,10 @@ const FavouritePage = (props: Props) => {
         {favouriteList.length > 0 ? (
           <div className="">
             {favouriteList.map((item: any) => (
-              <div key={item.id} className="grid grid-cols-2 gap-x-5 mb-10">
+              <div
+                key={item.id}
+                className="grid grid-cols-2 gap-x-5 mb-10 p-10"
+              >
                 <div>
                   <img
                     src={item.images.original.url}
