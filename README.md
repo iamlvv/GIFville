@@ -32,4 +32,4 @@ This is a simple web application that displays the trending GIFs on Giphy.
   - Users can see more GIFs from the same author when viewing a GIF detail.
   - Users can see more GIFs from the same category when viewing a GIF detail.
   - Users can rate a GIF.
-- However, due to lack of time and supported Giphy APIs, some of the features above are not possible to implement.
+- However, due to lack of supported Giphy APIs, some of the features above are not possible to implement.
