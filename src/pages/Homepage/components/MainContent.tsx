@@ -7,6 +7,8 @@ import Modal from "../../../components/Modal";
 import ModalContent from "../../../components/ModalContent";
 import Button from "../../../components/Button";
 import { AppContext } from "../../../context/AppContext";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 type Props = {};
 
 // Component to show header content: trending or search keyword
@@ -100,45 +102,62 @@ const MainContent = (props: Props) => {
     <div>
       <HeaderContent />
       <div className="flex justify-center">
-        <div className="items">
-          {trendingList.map((item: any, index: any) => {
-            return (
-              <div className="main-container item cursor-pointer" key={index}>
-                <div
-                  className="image-main-container content"
-                  onMouseOver={showOverlay}
-                  onMouseOut={hideOverlay}
-                  onClick={() => openModal(item)}
-                >
-                  <img
-                    src={item.images?.original.url}
-                    alt="test"
-                    className="rounded-sm shadow-lg border "
-                    width={220}
-                    height={164}
-                  />
-                  {show && (
-                    <div className="overlay">
-                      <div className="flex items-center gap-5">
-                        <Image
-                          src={item.user?.avatar_url}
-                          width={50}
-                          height={50}
-                          alt={"user"}
-                        />
-                        <h1>{item.user?.username}</h1>
-                      </div>
+        <div>
+          {trendingList.length > 0 ? (
+            <div className="items">
+              {trendingList.map((item: any, index: any) => {
+                return (
+                  <div
+                    className="main-container item cursor-pointer"
+                    key={index}
+                  >
+                    <div
+                      className="image-main-container content"
+                      onMouseOver={showOverlay}
+                      onMouseOut={hideOverlay}
+                      onClick={() => openModal(item)}
+                    >
+                      <img
+                        src={item.images?.original.url}
+                        alt="test"
+                        className="rounded-sm shadow-lg border "
+                        width={220}
+                        height={164}
+                      />
+                      {show && (
+                        <div className="overlay">
+                          <div className="flex items-center gap-5">
+                            <Image
+                              src={item.user?.avatar_url}
+                              width={50}
+                              height={50}
+                              alt={"user"}
+                            />
+                            <h1>{item.user?.username}</h1>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-                <Modal
-                  isShowing={isShowing}
-                  hide={closeModal}
-                  children={() => <ModalContent activeItem={activeItem} />}
-                />
-              </div>
-            );
-          })}
+                    <Modal
+                      isShowing={isShowing}
+                      hide={closeModal}
+                      children={() => (
+                        <ModalContent
+                          activeItem={activeItem}
+                          modalType="gifdetail"
+                        />
+                      )}
+                      modalType="gifdetail"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <Box sx={{ display: "flex" }}>
+              <CircularProgress />
+            </Box>
+          )}
         </div>
       </div>
       <Button

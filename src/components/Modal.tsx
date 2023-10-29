@@ -5,6 +5,7 @@ type Props = {
   isShowing: boolean;
   hide: (item?: any) => void;
   children: any;
+  modalType: string;
 };
 
 const styles = {
@@ -13,8 +14,12 @@ const styles = {
     opacity: "0.3",
   },
   modal: {
-    width: "800px",
+    width: "50%",
     height: "350px",
+  },
+  modalForFullImage: {
+    width: "100vh",
+    height: "100vh",
   },
 };
 // Component for displaying modal with background and modal content
@@ -32,8 +37,20 @@ const Modal = (props: Props) =>
           >
             <div
               className="bg-white rounded-md overflow-hidden shadow-md transform transition delay-300 sm:w-full ease-in-out"
-              style={styles.modal}
-              onClick={(e) => e.stopPropagation()} // prevent modal from closing when user click on modal content
+              style={
+                props.modalType === "fullsizegif"
+                  ? styles.modalForFullImage
+                  : styles.modal
+              }
+              onClick={(e) =>
+                props.modalType === "gifdetail" ? e.stopPropagation() : null
+              } // prevent modal from closing when user click on modal content
+              onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                  console.log("esc");
+                  props.hide();
+                }
+              }}
             >
               {props.children()}
             </div>

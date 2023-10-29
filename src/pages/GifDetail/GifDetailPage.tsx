@@ -10,6 +10,11 @@ import { ToastContainer, toast } from "react-toastify";
 import Banner from "../Homepage/components/Banner";
 import { AiOutlineExpand } from "react-icons/ai";
 import { AppContext } from "../../context/AppContext";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+import Modal from "../../components/Modal";
+import ModalContent from "../../components/ModalContent";
+
 type Props = {};
 
 // Component to show gif detail page
@@ -21,6 +26,19 @@ const GifDetailPage = (props: Props) => {
   const [show, setShow] = useState(false); // state to show overlay
 
   const { setFavouriteList } = useContext(AppContext); // state to store favourite list
+
+  const [isLoading, setIsLoading] = useState(false); // state to show loading when fetching data
+
+  const [isShowing, setIsShowing] = useState(false); // isShowing to show modal when user click on gif
+
+  const openModal = () => {
+    setIsShowing(true);
+  };
+
+  // close modal when user click outside of modal
+  const closeModal = () => {
+    setIsShowing(false);
+  };
 
   // show overlay
   const showOverlay = () => {
@@ -93,7 +111,7 @@ const GifDetailPage = (props: Props) => {
 
   // get gif detail by id from api when component mounted
   useEffect(() => {
-    getGifDetail({ id, setState: setGifDetail });
+    getGifDetail({ id, setState: setGifDetail, setIsLoading });
   }, []);
 
   return (
@@ -101,86 +119,111 @@ const GifDetailPage = (props: Props) => {
       <Header />
       <Banner />
       <div className="mb-10">
-        <h1 className="text-2xl my-5">
-          <span className="font-bold">GIF Name:</span> {gifDetail.title}
-        </h1>
-        <div className="">
-          <div
-            className="flex justify-center gap-x-20"
-            style={{
-              position: "relative",
-            }}
-          >
-            <div className="main-container">
-              <div
-                onMouseOver={showOverlay}
-                onMouseOut={hideOverlay}
-                className="image-main-container"
-              >
-                <img
-                  src={gifDetail.images?.original.url}
-                  alt="test"
-                  className="rounded-md shadow-lg"
-                />
-                {show && (
-                  <div className="overlay border">
-                    <AiOutlineExpand
-                      width={100}
-                      height={100}
-                      className="cursor-pointer"
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
+        {
+          // show loading when gif detail is empty
+          !isLoading ? (
             <div>
-              <div className="flex flex-col gap-y-10">
-                <div className="flex items-center gap-x-5">
-                  <h1 className="font-bold">User: </h1>
-                  <Image
-                    src={gifDetail.user?.avatar_url}
-                    width={50}
-                    height={50}
-                    alt={"user"}
-                  />
-                  <h1>{gifDetail.user?.username}</h1>
-                </div>
-                <div className="flex flex-col gap-y-5">
-                  <div className="flex flex-col gap-5">
-                    <h1>
-                      <span className="font-bold">Rating:</span>{" "}
-                      {gifDetail.rating}
-                    </h1>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="mt-10 flex gap-5 flex-col"
-                style={{
-                  position: "absolute",
-                  bottom: "0",
-                }}
-              >
-                <Button
-                  className="flex items-center gap-5 hover:bg-white hover:text-black transition ease-in-out w-32 p-2 rounded-md justify-center cursor-pointer border text-white bg-black"
-                  onClick={() => handleAddToFavourite(gifDetail)}
-                >
-                  <AiFillHeart />
-                  <h1>Favourite</h1>
-                </Button>
-                <Button
-                  className="flex items-center gap-5 hover:bg-white hover:text-black transition ease-in-out w-32 p-2 rounded-md justify-center cursor-pointer border text-white bg-black"
-                  onClick={() => {
-                    handleShare();
+              <h1 className="text-2xl my-5">
+                <span className="font-bold">GIF Name:</span> {gifDetail.title}
+              </h1>
+              <div className="">
+                <div
+                  className="flex justify-center gap-x-20"
+                  style={{
+                    position: "relative",
                   }}
                 >
-                  <PiPaperPlaneTiltFill />
-                  <h1>Share</h1>
-                </Button>
+                  <div className="main-container">
+                    <div
+                      onMouseOver={showOverlay}
+                      onMouseOut={hideOverlay}
+                      className="image-main-container"
+                    >
+                      <img
+                        src={gifDetail.images?.original.url}
+                        alt="test"
+                        className="rounded-md shadow-lg [data-zoomable]"
+                      />
+                      {show && (
+                        <div className="overlay border">
+                          <AiOutlineExpand
+                            width={100}
+                            height={100}
+                            className="cursor-pointer"
+                            onClick={() => {
+                              openModal();
+                            }}
+                          />
+                        </div>
+                      )}
+                      <Modal
+                        isShowing={isShowing}
+                        hide={closeModal}
+                        children={() => (
+                          <ModalContent
+                            modalType="fullsizegif"
+                            activeItem={gifDetail}
+                          />
+                        )}
+                        modalType="fullsizegif"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex flex-col gap-y-10">
+                      <div className="flex items-center gap-x-5">
+                        <h1 className="font-bold">User: </h1>
+                        <Image
+                          src={gifDetail.user?.avatar_url}
+                          width={50}
+                          height={50}
+                          alt={"user"}
+                        />
+                        <h1>{gifDetail.user?.username}</h1>
+                      </div>
+                      <div className="flex flex-col gap-y-5">
+                        <div className="flex flex-col gap-5">
+                          <h1>
+                            <span className="font-bold">Rating:</span>{" "}
+                            {gifDetail.rating}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="mt-10 flex gap-5 flex-col"
+                      style={{
+                        position: "absolute",
+                        bottom: "0",
+                      }}
+                    >
+                      <Button
+                        className="flex items-center gap-5 hover:bg-white hover:text-black transition ease-in-out w-32 p-2 rounded-md justify-center cursor-pointer border text-white bg-black"
+                        onClick={() => handleAddToFavourite(gifDetail)}
+                      >
+                        <AiFillHeart />
+                        <h1>Favourite</h1>
+                      </Button>
+                      <Button
+                        className="flex items-center gap-5 hover:bg-white hover:text-black transition ease-in-out w-32 p-2 rounded-md justify-center cursor-pointer border text-white bg-black"
+                        onClick={() => {
+                          handleShare();
+                        }}
+                      >
+                        <PiPaperPlaneTiltFill />
+                        <h1>Share</h1>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          ) : (
+            <Box sx={{ display: "flex" }}>
+              <CircularProgress />
+            </Box>
+          )
+        }
       </div>
       <ToastContainer />
     </div>

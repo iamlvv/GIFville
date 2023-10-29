@@ -1,6 +1,6 @@
 type Props = {
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   src: string;
   alt: string;
   className?: string;
@@ -13,7 +13,10 @@ const Image = (props: Props) => {
     <img
       src={props.src}
       alt={props.alt}
-      style={{ width: props.width, height: props.height }}
+      style={{
+        width: props.width ? props.width : "100%",
+        height: props.height ? props.height : "100%",
+      }}
       className={props.className}
       onClick={props.onClick}
     />

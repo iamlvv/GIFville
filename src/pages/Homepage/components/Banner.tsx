@@ -8,7 +8,6 @@ type Props = {};
 const styles = {
   banner: {
     width: "100%",
-    background: "linear-gradient(180deg, #000000 0%, #1D1D1D 100%)",
   },
 };
 

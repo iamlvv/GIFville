@@ -32,6 +32,7 @@ const getTrendingGifs = async (props: getTrendingGifsProps) => {
 type getGifDetailProps = {
   id: string | undefined;
   setState: React.Dispatch<any>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 const getGifDetail = async (props: getGifDetailProps) => {
   try {
@@ -41,7 +42,7 @@ const getGifDetail = async (props: getGifDetailProps) => {
       },
     });
     props.setState(response.data.data);
-    console.log(response.data);
+    props.setIsLoading(false);
     return response.data;
   } catch (error) {
     console.error(error);

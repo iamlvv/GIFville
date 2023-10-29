@@ -8,7 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { AppContext } from "../context/AppContext";
 
 type Props = {
-  activeItem: any;
+  activeItem?: any;
+  modalType: string;
 };
 
 // Component to show modal content when user click on gif item
@@ -68,8 +69,8 @@ const ModalContent = (props: Props) => {
       theme: "dark",
     });
   };
-  return (
-    <div className="text-black flex p-10 gap-5 text-lg">
+  return props.modalType === "gifdetail" ? (
+    <div className="text-black grid grid-cols-2 p-10 gap-5 text-lg">
       <div>
         <Image
           src={props.activeItem?.images?.original.url}
@@ -123,6 +124,12 @@ const ModalContent = (props: Props) => {
         </div>
       </div>
     </div>
+  ) : (
+    <Image
+      src={props.activeItem?.images?.original.url}
+      alt="test"
+      className="rounded-md shadow-lg"
+    />
   );
 };
 

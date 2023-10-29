@@ -26,12 +26,10 @@ This is a simple web application that displays the trending GIFs on Giphy.
 
 - I have spent about 5 days to complete this project.
 - If I have more time, I would like to add more features such as:
-  - Handle loading state when fetching data.
   - Users can filter GIFs by tags.
-  - Users can zoom in/out a GIF.
-  - Users can view GIFs in full screen.
   - Users can view GIFs in a slideshow.
   - Users can see more related GIFs when viewing a GIF detail.
   - Users can see more GIFs from the same author when viewing a GIF detail.
   - Users can see more GIFs from the same category when viewing a GIF detail.
   - Users can rate a GIF.
+- However, due to lack of time and supported Giphy APIs, some of the features above are not possible to implement.
